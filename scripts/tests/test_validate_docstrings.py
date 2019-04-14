@@ -3,6 +3,7 @@ import random
 import string
 import textwrap
 import pytest
+#import pdb;pdb.set_trace()
 import numpy as np
 import pandas as pd
 
@@ -1045,6 +1046,7 @@ class TestDocstringClass(object):
     @pytest.mark.parametrize('invalid_name',
                              ['pandas.BadClassName',
                               'pandas.Series.bad_method_name'])
+
     def test_raises_for_invalid_attribute_name(self, invalid_name):
         name_components = invalid_name.split('.')
         obj_name, invalid_attr_name = name_components[-2], name_components[-1]
@@ -1052,20 +1054,10 @@ class TestDocstringClass(object):
         with pytest.raises(AttributeError, match=msg):
             validate_docstrings.Docstring(invalid_name)
 
-    def missing_encoding_write_to_file(self):
-        """
-        Examples
-        --------
-        >>> try:
-        ...   docstr = validate_docstrings.Docstring('pandas.Series.str.isdecimal')
-        ...   result = docstr.validate_pep8()
-        ...   next(result)
-        ...   print(1)
-        ... except:
-        ...   0
-        1
-        """
-        pass
+    @pytest.mark.parametrize('name', ['pandas.Series.str.isdecimal'])
+    def test_encode_content_write_to_file(self, name):
+        docstr = validate_docstrings.Docstring(name).validate_pep8()
+        assert len(list(docstr)) == 0
 
 
 class TestMainFunction(object):
@@ -1165,3 +1157,7 @@ class TestMainFunction(object):
                                                output_format='default',
                                                ignore_deprecated=False)
         assert exit_status == 1
+
+
+if __name__ == '__main__':
+    pytest.main()
