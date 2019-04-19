@@ -1052,9 +1052,9 @@ class TestDocstringClass:
         with pytest.raises(AttributeError, match=msg):
             validate_docstrings.Docstring(invalid_name)
 
-    @pytest.mark.parametrize('name', ['pandas.Series.str.isdecimal'])
+    @pytest.mark.parametrize('name', ['pandas.Series.str.isdecimal', 'pandas.Series.str.islower'])
     def test_encode_content_write_to_file(self, name):
-        docstr = validate_docstrings.Docstring(name).validate_pep8()
+        docstr = validate_docstrings.Docstring(name).validate_pep8() # GH25466
         assert len(list(docstr)) == 0
 
 
