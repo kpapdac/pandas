@@ -6,7 +6,7 @@ import pytest
 import numpy as np
 import pandas as pd
 
-from scripts import validate_docstrings
+import validate_docstrings
 validate_one = validate_docstrings.validate_one
 
 
